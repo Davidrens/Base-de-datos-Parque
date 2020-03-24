@@ -14,17 +14,17 @@ import dbController.SQLZona;
 
 public class SelecTabla {
 	
-	public static void SelecTabla(int funcion) throws SQLException, IOException{
+	public static void SelecTabla(int funcion, Scanner sc) throws SQLException, IOException{
 		Boolean salir = false;
 	    Scanner sc = new Scanner(System.in);
-	    int opcion;
+	    int opcion2;
 
 	    while (!salir) {
 	        try {
 	            System.out.println("Seleccione la tabla deseada\n1)Clientes \n2)Empleados \n3) Atracciones \n4) Puestos "
 	            		+ "\n5) Zona \n6) Cargo \n7) Salir");
-	            opcion = sc.nextInt();
-	            switch (opcion) {
+	            opcion2 = sc.nextInt();
+	            switch (opcion2) {
 	                case 1:
 	                    System.out.println("Has seleccionado la tabla de Clientes");
 	                    switch(funcion) {
@@ -208,7 +208,6 @@ public class SelecTabla {
 	        }
 	    }
 	    
-	    sc.close();
 	    
 	    }
 	

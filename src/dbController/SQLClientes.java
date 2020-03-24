@@ -26,7 +26,7 @@ public class SQLClientes {
 	public static void obtenerInfo() throws SQLException{
 		Connection c = Conexion.openConnection();
 		
-		printClientes();
+		printClientes(c);
 
 		Conexion.closeConnection(c);
 		
@@ -120,7 +120,7 @@ public class SQLClientes {
 	
 	public static void borrarTabla() throws SQLException {
 		
-		Connection c =Conexion.openConnection();
+		Connection c = Conexion.openConnection();
 		
 		Statement stmt1 = c.createStatement();
 		String sql1 = "Drop table Clientes" ;
@@ -138,7 +138,7 @@ public class SQLClientes {
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("\nElija un cliente a eliminar, teclee su ID: \n");
-		printClientes();
+		printClientes(c);
 		int id = Integer.parseInt(reader.readLine());
 		String sql = "DELETE FROM Clientes WHERE id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
@@ -149,11 +149,12 @@ public class SQLClientes {
 			
 	}
 	
-	private static void printClientes() throws SQLException {
+	private static void printClientes(Connection c) throws SQLException {
 		
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Clientes";
 		ResultSet rs = stmt.executeQuery(sql);
+		if (rs!= null) {
 		while (rs.next()) {
 			int id = rs.getInt("Id");
 			String nombre = rs.getString("Nombre");
@@ -172,6 +173,7 @@ public class SQLClientes {
 					+ ", " + fecha_salida + ", "+ "familia numerosa: "+ numerosa + ", " + nombrePuesto + ", " + nombreAtraccion);
 			
 		}
+		}else System.out.println("No existen datos");
 		rs.close();
 		stmt.close();
 	}

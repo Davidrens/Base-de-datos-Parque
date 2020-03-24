@@ -21,7 +21,7 @@ public class SQLEmpleados {
 		Connection c =Conexion.openConnection();
 	//  SQLSelect
 		
-		printEmpleados();
+		printEmpleados(c);
 		
 		Conexion.closeConnection(c);
 		
@@ -74,7 +74,7 @@ public class SQLEmpleados {
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Elija a un empleado, introduzca su ID: ");
-		printEmpleados();
+		printEmpleados(c);
 		int empleado_id = Integer.parseInt(reader.readLine());
 		System.out.print("fije el nuevo sueldo del empleado: ");
 		int nuevoSueldo = Integer.parseInt(reader.readLine());
@@ -108,7 +108,7 @@ public class SQLEmpleados {
 		//  SQLDelete
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("\nElija un empleado a borrar, teclee su ID: ");
-		printEmpleados();
+		printEmpleados(c);
 		int cargo_id = Integer.parseInt(reader.readLine());
 		String sql = "DELETE FROM Empleados WHERE id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
@@ -120,18 +120,20 @@ public class SQLEmpleados {
 	}
 	
 	
-	private static void printEmpleados() throws SQLException {
+	private static void printEmpleados(Connection c) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Empleados";
 		ResultSet rs = stmt.executeQuery(sql);
+		if(rs != null) {
 		while (rs.next()) {
 			int id = rs.getInt("Id");
 			String nombre = rs.getString("Nombre");
-			Cargo cargo_id = getCargos(rs.getInt("Cargo_id"));	
-			Zona zona_id = getZonas(rs.getInt("Zona_id"));
-			Integer sueldo = rs.getInt("Sueldo");
+			int cargo_id = rs.getInt("Cargo_id");	
+			int zona_id = rs.getInt("Zona_id");
+			int sueldo = rs.getInt("Sueldo");
 			Empleados empleado = new Empleados(id, nombre, cargo_id, zona_id, sueldo);
 			System.out.println(empleado);
+		}
 		}
 		rs.close();
 		stmt.close();

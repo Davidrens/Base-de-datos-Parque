@@ -32,38 +32,16 @@ public class SQLClientes {
 		
 	}
 	
-	public static void insertarDatos() throws SQLException, IOException{
-		Scanner sc = new Scanner(System.in);
+	public static void insertarDatos(Clientes paco) throws SQLException, IOException{
+		
 		Connection c =Conexion.openConnection();
 		//  SQLInsert
-		System.out.println("Introduzca información del empleado:");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.print("Nombre: ");
-		String nombre = reader.readLine();
-		System.out.print("\nEdad: ");
-		int edad = Integer.parseInt(reader.readLine());
-		System.out.print("\nAltura: ");
-		int altura = Integer.parseInt(reader.readLine());
-		System.out.print("\nFecha entrada: ");
-		String entrada = reader.readLine();
-		System.out.print("\nFecha salida: ");
-		String salida = reader.readLine();
-		System.out.print("\nFamilia numerosa: ");
-		boolean numerosa = sc.nextBoolean();
-		System.out.print("\nPuesto: ");
-		String puesto = reader.readLine();
-		int puesto_id = SQLPuestos.getId(puesto);
-		System.out.print("\nAtracción: ");
-		String atraccion = reader.readLine();
-		int atraccion_id = SQLAtracciones.getId(atraccion);
-		
-		
 
 		// Insert new record: begin
 		Statement stmt = c.createStatement();
 		String sql = "INSERT INTO Clientes (Nombre, Edad, Altura, Fecha_entrada, Fecha_salida, Familia_numerosa, Puesto_id, Atraccion_id) "
-				+ "VALUES ('" + nombre + "', '" + edad	+ "', '" + altura + "', '" + entrada + "', '" + salida + "','" + "', '" + numerosa 
-				+ puesto_id + "', '" + atraccion_id +"');";
+				+ "VALUES ('" + paco.nombre + "', '" + paco.edad+ "', '" + paco.altura + "', '" + paco.entrada + "', '" + paco.salida + "','" + "', '" + numerosa 
+				+ paco.puesto_id + "', '" + paco.atraccion_id +"');";
 		stmt.executeUpdate(sql);
 		stmt.close();
 		sc.close();

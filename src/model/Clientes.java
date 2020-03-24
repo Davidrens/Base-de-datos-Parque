@@ -17,7 +17,17 @@ public class Clientes {
 	private ArrayList<int[]> ofertas_id = new ArrayList<int[]>();
 	
 	
-	
+	class Clientes {
+		int id;
+		int altura;
+		sring nombre;
+	}
+	Clientes (int i, int a, string n) {
+		id = i;
+		altura = a;
+		nombre = n;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}

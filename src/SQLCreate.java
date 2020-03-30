@@ -80,7 +80,7 @@ public class SQLCreate {
 						"	\"Fecha_entrada\" TEXT not null,\r\n" + 
 						"	\"Fecha_salida\" TEXT not null,\r\n" + 
 						"	\"Familia_numerosa\" boolean not null,\r\n" + 
-						"	\"Puesto_id\" integer ,\r\n" + 
+						"	\"Puesto_id\" integer,\r\n" + 
 						"	\"Atraccion_id\" integer,\r\n" + 
 						"	FOREIGN KEY (Puesto_id) REFERENCES Puestos(Id),\r\n" + 
 						"	FOREIGN KEY (Atraccion_id) REFERENCES Atracciones(Id)\r\n" + 

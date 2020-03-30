@@ -1,7 +1,11 @@
 package GUI;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -11,12 +15,12 @@ import dbController.SQLClientes;
 import dbController.SQLEmpleados;
 import dbController.SQLPuestos;
 import dbController.SQLZona;
+import model.Clientes;
 
 public class SelecTabla {
 	
 	public static void SelecTabla(int funcion, Scanner sc) throws SQLException, IOException{
 		Boolean salir = false;
-	    Scanner sc = new Scanner(System.in);
 	    int opcion2;
 
 	    while (!salir) {
@@ -28,36 +32,57 @@ public class SelecTabla {
 	                case 1:
 	                    System.out.println("Has seleccionado la tabla de Clientes");
 	                    switch(funcion) {
+	                    case 2:
+	                    	
+	                    	break;
 	                    case 3:
-			System.out.println("Introduzca informaciÃ³n del Cliente:");
-					BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-					  
-					System.out.print("Nombre: ");
-					String nombre = reader.readLine();
-					System.out.print("\nEdad: ");
-					int edad = Integer.parseInt(reader.readLine());
-					System.out.print("\nAltura: ");
-					int altura = Integer.parseInt(reader.readLine());
-					System.out.print("\nFecha entrada: ");
-					String entrada = reader.readLine();
-					System.out.print("\nFecha salida: ");
-					String salida = reader.readLine();
-					System.out.print("\nFamilia numerosa: ");
-					boolean numerosa = sc.nextBoolean();
-					System.out.print("\nPuesto: ");
-					String puesto = reader.readLine();
-					int puesto_id = SQLPuestos.getId(puesto);
-					System.out.print("\nAtracciÃ³n: ");
-					String atraccion = reader.readLine();
-					int atraccion_id = SQLAtracciones.getId(atraccion);
-				Clientes paco = new Clientes(edad, altura, nombre, entrada, salida, numerosa, puesto_id, atraccion_id);
-		
-	                    	SQLClientes.insertarDatos(paco);
+	                    	System.out.println("Introduzca información del Cliente:");
+	    					BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	    					  
+	    					System.out.print("Nombre: ");
+	    					String nombre = reader.readLine();
+	    					System.out.print("\nEdad: ");
+	    					int edad = Integer.parseInt(reader.readLine());
+	    					System.out.print("\nAltura: ");
+	    					int altura = Integer.parseInt(reader.readLine());
+	    					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	    					System.out.print("\nFecha entrada (año-mes-día): ");
+	    					String Sentrada = reader.readLine();
+	    					LocalDate entrada =LocalDate.parse(Sentrada,formatter);					
+	    					System.out.print("\nFecha salida (año-mes-día): ");
+	    					String Ssalida = reader.readLine();
+	    					LocalDate salida = LocalDate.parse(Ssalida,formatter);
+	    					System.out.print("\nFamilia numerosa: ");
+	    					boolean numerosa = sc.nextBoolean();
+	    					Boolean ciclo = true;
+	    					while(ciclo){
+	    					System.out.println("Añadir lugar en el que se encuentra: 1)Puesto 2)Atraccion");
+	    					int elegir = Integer.parseInt(reader.readLine());
+	    					switch(elegir) {
+	    					case 1:
+		    					System.out.print("\nPuesto: ");
+		    					String puesto = reader.readLine();
+			    				Clientes cliente1 = new Clientes(edad, altura, nombre, entrada, salida, numerosa);
+	    						ciclo = false;
+	    						cliente1.setPuesto_id(puesto);
+    	                    	SQLClientes.insertarDatos(cliente1);
+			    				break;
+	    					case 2:
+	    						System.out.println("\nAtraccion:");
+	    						String atraccion = reader.readLine();
+			    				Clientes cliente2 = new Clientes(edad, altura, nombre, entrada, salida, numerosa);
+		    					ciclo = false;
+		    					cliente2.setAtraccion_id(atraccion);
+    	                    	SQLClientes.insertarDatos(cliente2);
+		    					break;
+	    					 default:
+	    						break;
+	    					}
+	    					}
 	                    	break;
 	                    case 4:
 	                    	SQLClientes.obtenerInfo();
 	                    	break;
-	                    	
 	                    case 5:
 	                    	SQLClientes.buscarDatos();
 	                    	break;
@@ -75,6 +100,8 @@ public class SelecTabla {
 	                case 2:
 	                    System.out.println("Has seleccionado la tabla de Empleados");
 	                    switch(funcion) {
+	                    case 2:
+	                    	break;
 	                    case 3:
 	                    	SQLEmpleados.insertarDatos();
 	                    	break;
@@ -100,7 +127,11 @@ public class SelecTabla {
 	                case 3:
 	                    System.out.println("Has seleccionado la tabla de Atracciones");
 	                    switch(funcion) {
-	                    case 3:
+	                    case 2:
+	                    	
+	                    	
+	                    	break;
+	                    	case 3:
 	                    	SQLAtracciones.insertarDatos();
 	                    	break;
 	                    case 4:
@@ -125,6 +156,9 @@ public class SelecTabla {
 	                case 4:
 	                	System.out.println("Has seleccionado la tabla Puestos");
 	                	switch(funcion) {
+	                	case 2:
+	                	
+	                		break;
 	                    case 3:
 	                    	SQLPuestos.insertarDatos();
 	                    	break;
@@ -150,6 +184,10 @@ public class SelecTabla {
 	                case 5:
 	                	System.out.println("Has seleccionado la tabla Zona");
 	                	switch(funcion) {
+	                	case 2:
+	                		
+	                		break;
+	                	
 	                    case 3:
 	                    	SQLZona.insertarDatos();
 	                    	break;
@@ -175,6 +213,10 @@ public class SelecTabla {
 	                case 6:
 	                	System.out.println("Has seleccionado la tabla Cargo");
 	                	switch(funcion) {
+	                	case 2:
+	                		
+	                		break;
+	                	
 	                    case 3:
 	                    	SQLCargo.insertarDatos();
 	                    	break;
@@ -200,14 +242,13 @@ public class SelecTabla {
 	                	salir = true;
 	                	break;
 	                default:
-	                    System.out.println("Solo nÃºmeros entre 1 y 7");
+	                    System.out.println("Solo números entre 1 y 7");
 	            }
 	        } catch (InputMismatchException e) {
-	            System.out.println("Debes insertar un nÃºmero");
+	            System.out.println("Debes insertar un número");
 	            sc.next();
 	        }
 	    }
-	    
 	    
 	    }
 	

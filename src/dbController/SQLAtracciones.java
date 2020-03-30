@@ -44,32 +44,28 @@ public static String getNombreAtraccion(int id) throws SQLException {
 	}
 
 public static int getId(String nombreAtraccion) throws SQLException {
-	
+	int id = 0;
 	Connection c =Conexion.openConnection();
 	
-	String sql = "SELECT id FROM Cargos Where Nombre LIKE ? ";
+	String sql = "SELECT id FROM Atracciones Where Nombre LIKE ? ";
 	PreparedStatement prep = c.prepareStatement(sql);
 	prep.setString(1, nombreAtraccion);
 	ResultSet rs = prep.executeQuery();
 	if(rs != null) {
 	while(rs.next()) {
 
-		int id =  rs.getInt("Id");
-		return id;
+		 id =  rs.getInt("Id");
 	}
 	
 	}else {
 		System.out.println("No hubo resultados");
-		return 0;
 	}
 	
 	// CLOSE Statement
 	rs.close();
 	prep.close();
-	
 	Conexion.closeConnection(c);
-	return 0;
-	
+	return id;
 }
 
 	

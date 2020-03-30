@@ -13,7 +13,7 @@ import java.sql.Statement;
 			try {
 				// Open database connection
 				Class.forName("org.sqlite.JDBC");
-				Connection c = DriverManager.getConnection("jdbc:sqlite:./db/company.db");
+				Connection c = DriverManager.getConnection("jdbc:sqlite:./db/parque.db");
 				c.createStatement().execute("PRAGMA foreign_keys=ON");
 				System.out.println("Database connection opened.");
 				
@@ -28,17 +28,12 @@ import java.sql.Statement;
 				String zona_id = reader.readLine();
 				System.out.print("Sueldo: ");
 				String sueldo = reader.readLine();
-				System.out.print("Puesto_id: ");
-				String puesto_id = reader.readLine();
-				System.out.print("Atraccion_id: ");
-				String atraccion_id = reader.readLine();
 				
 
 				// Insert new record: begin
 				Statement stmt = c.createStatement();
-				String sql = "INSERT INTO Empleados (Nombre, Cargo_id, Zona_id, Sueldo, Puesto_id, Atraccion_id) "
-						+ "VALUES ('" + nombre + "', '" + cargo_id	+ "', '" + zona_id + "', '" + sueldo + "', '" 
-						+ puesto_id + "', '" + atraccion_id +"');";
+				String sql = "INSERT INTO Empleados (Nombre, Cargo_id, Sueldo, Zona_id) "
+						+ "VALUES ('" + nombre + "', '" + cargo_id	+ "',  '" + sueldo +"','"+ zona_id+"');";
 				stmt.executeUpdate(sql);
 				stmt.close();
 				//TAMBIEN SE PODRÍA HACER CON UN PREPARED STATEMENT DE LA SIGUIENTE MANERA

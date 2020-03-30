@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import model.Clientes;
+
 //import model.Cargo;
 //import model.Empleados;
 //import model.Zona;
@@ -17,11 +19,6 @@ import java.util.Scanner;
 public class SQLClientes {
 
 	private static Connection c;
-	
-	public static void Clientes() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public static void obtenerInfo() throws SQLException{
 		Connection c = Conexion.openConnection();
@@ -32,27 +29,35 @@ public class SQLClientes {
 		
 	}
 	
-	public static void insertarDatos(Clientes paco) throws SQLException, IOException{
+public static void insertarDatos(Clientes cliente) throws SQLException, IOException{
 		
 		Connection c =Conexion.openConnection();
 		//  SQLInsert
-
+		System.out.println(""+cliente);
 		// Insert new record: begin
+		if(cliente.getPuesto_id()==0) {
+			System.out.println("Acceso al insert de atracciones");
 		Statement stmt = c.createStatement();
-		String sql = "INSERT INTO Clientes (Nombre, Edad, Altura, Fecha_entrada, Fecha_salida, Familia_numerosa, Puesto_id, Atraccion_id) "
-				+ "VALUES ('" + paco.nombre + "', '" + paco.edad+ "', '" + paco.altura + "', '" + paco.entrada + "', '" + paco.salida + "','" + "', '" + numerosa 
-				+ paco.puesto_id + "', '" + paco.atraccion_id +"');";
+		String sql = "INSERT INTO Clientes (Nombre, Edad, Altura, Fecha_entrada, Fecha_salida, Familia_numerosa,Atraccion_id) "
+				+ "VALUES ('" + cliente.getNombre() + "', '" + cliente.getEdad()+ "', '" + cliente.getAltura() + "', '" + cliente.getFechaentrada() + "', '" + cliente.getFechasalida() + "','" + cliente.getNumerosa() +"', '"+cliente.getAtraccion_id()+"' );";
 		stmt.executeUpdate(sql);
 		stmt.close();
-		sc.close();
-			Conexion.closeConnection(c);
+		}else {
+			Statement stmt = c.createStatement();
+			String sql = "INSERT INTO Clientes (Nombre, Edad, Altura, Fecha_entrada, Fecha_salida, Familia_numerosa, Puesto_id) "
+					+ "VALUES ('" + cliente.getNombre() + "', ' "+ cliente.getEdad()+ "', '" + cliente.getAltura() + "', '" + cliente.getFechaentrada() + "', '" + cliente.getFechasalida() + "','" + cliente.getNumerosa()+"',' "+ cliente.getPuesto_id()+" ');";
+			stmt.executeUpdate(sql);
+			stmt.close();
+		}
+		c.close();
+		Conexion.closeConnection(c);
 			
 	}
 	
 	public static void buscarDatos() throws SQLException, IOException {
 		Connection c =Conexion.openConnection();
 		//  SQLSearch
-		
+
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.print("Nombre cliente: ");
 		String searchName = reader.readLine();

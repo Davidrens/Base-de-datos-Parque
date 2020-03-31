@@ -105,7 +105,7 @@ public static int getId(String nombreZona) throws SQLException {
 		String sql1 = "Drop table Zonas" ;
 		stmt1.executeUpdate(sql1);
 		stmt1.close();
-		
+		System.out.println("\nTabla Zona borrada");
 		
 		Conexion.closeConnection(c);
 				

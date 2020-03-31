@@ -97,7 +97,7 @@ public class SQLEmpleados {
 		String sql1 = "Drop table Empleados" ;
 		stmt1.executeUpdate(sql1);
 		stmt1.close();
-		
+		System.out.println("\nTabla Empleados borrada");
 		
 		Conexion.closeConnection(c);
 				

@@ -59,24 +59,24 @@ public class SelecTabla {
 	    					System.out.println("Añadir lugar en el que se encuentra: 1)Puesto 2)Atraccion");
 	    					int elegir = Integer.parseInt(reader.readLine());
 	    					switch(elegir) {
-	    					case 1:
-		    					System.out.print("\nPuesto: ");
-		    					String puesto = reader.readLine();
-			    				Clientes cliente1 = new Clientes(edad, altura, nombre, entrada, salida, numerosa);
-	    						ciclo = false;
-	    						cliente1.setPuesto_id(puesto);
-    	                    	SQLClientes.insertarDatos(cliente1);
-			    				break;
-	    					case 2:
-	    						System.out.println("\nAtraccion:");
-	    						String atraccion = reader.readLine();
-			    				Clientes cliente2 = new Clientes(edad, altura, nombre, entrada, salida, numerosa);
-		    					ciclo = false;
-		    					cliente2.setAtraccion_id(atraccion);
-    	                    	SQLClientes.insertarDatos(cliente2);
-		    					break;
-	    					 default:
-	    						break;
+	    						case 1:
+	    							System.out.print("\nPuesto: ");
+	    							String puesto = reader.readLine();
+	    							Clientes cliente1 = new Clientes(edad, altura, nombre, entrada, salida, numerosa);
+	    							ciclo = false;
+	    							cliente1.setPuesto_id(puesto);
+	    							SQLClientes.insertarDatos(cliente1);
+	    							break;
+	    						case 2:
+	    							System.out.println("\nAtraccion:");
+	    							String atraccion = reader.readLine();
+	    							Clientes cliente2 = new Clientes(edad, altura, nombre, entrada, salida, numerosa);
+	    							ciclo = false;
+	    							cliente2.setAtraccion_id(atraccion);
+	    							SQLClientes.insertarDatos(cliente2);
+	    							break;
+	    						default:
+	    							break;
 	    					}
 	    					}
 	                    	break;

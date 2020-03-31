@@ -107,7 +107,7 @@ public static int getId(String nombreCargo) throws SQLException {
 		String sql1 = "Drop table Cargos" ;
 		stmt1.executeUpdate(sql1);
 		stmt1.close();
-		
+		System.out.println("\nTabla Cargo borrada");
 		
 		Conexion.closeConnection(c);
 				

@@ -44,6 +44,7 @@ public class SQLOfertas {
 		String sql1 = "Drop table Ofertas" ;
 		stmt1.executeUpdate(sql1);
 		stmt1.close();
+		System.out.println("\nTabla Ofertas borrada");
 		
 		
 		Conexion.closeConnection(c);

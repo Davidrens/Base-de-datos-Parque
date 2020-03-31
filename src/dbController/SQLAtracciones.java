@@ -140,6 +140,7 @@ public static int getId(String nombreAtraccion) throws SQLException {
 		String sql1 = "Drop table Atracciones" ;
 		stmt1.executeUpdate(sql1);
 		stmt1.close();
+		System.out.println("\nTabla Atracciones borrada");
 		
 		
 		Conexion.closeConnection(c);

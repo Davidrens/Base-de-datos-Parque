@@ -109,6 +109,7 @@ public static void insertarDatos(Clientes cliente) throws SQLException, IOExcept
 		String sql1 = "Drop table Clientes" ;
 		stmt1.executeUpdate(sql1);
 		stmt1.close();
+		System.out.println("\nTabla Clientes borrada");
 		
 		
 		Conexion.closeConnection(c);
@@ -121,7 +122,7 @@ public static void insertarDatos(Clientes cliente) throws SQLException, IOExcept
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("\nElija un cliente a eliminar, teclee su ID: \n");
-		printClientes(c);
+		//printClientes(c);
 		int id = Integer.parseInt(reader.readLine());
 		String sql = "DELETE FROM Clientes WHERE id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
@@ -133,6 +134,7 @@ public static void insertarDatos(Clientes cliente) throws SQLException, IOExcept
 	}
 	
 	private static void printClientes(Connection c) throws SQLException {
+				
 		
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Clientes";

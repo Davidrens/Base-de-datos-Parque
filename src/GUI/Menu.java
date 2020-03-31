@@ -28,7 +28,7 @@ public class Menu {
                         break;
                     case 2:
                         System.out.println("Has seleccionado la opcion: Borrar tabla");
-	                    //selecTabla.selecTabla(opcion);
+	                    DropTable.DropTable();
                         break;
                     case 3:
                         System.out.println("Has seleccionado la opcion: Insertar datos en tabla");

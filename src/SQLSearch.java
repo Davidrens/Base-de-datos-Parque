@@ -20,7 +20,7 @@ public class SQLSearch {
 			String searchName = reader.readLine();
 		
 			// Seleccionar Busqueda
-			String sql = "SELECT * FROM Empleados Where nombre LIKE ? ";
+			String sql = "SELECT * FROM Atracciones ";
 			PreparedStatement prep = c.prepareStatement(sql);
 			prep.setString(1, searchName);
 			ResultSet rs = prep.executeQuery();

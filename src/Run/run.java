@@ -11,9 +11,10 @@ public class run {
 	public static void main(String[] args) throws SQLException, IOException {
 		try {
 				Menu.Interfaz();
+				System.out.println("Terminando programa...");
+				
 		}catch (InputMismatchException e) {
             
         }
 	}
 }
-

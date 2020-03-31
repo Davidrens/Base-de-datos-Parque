@@ -1,6 +1,5 @@
 package dbController;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
 public class SQLCreate {
 		public static void Create() {
@@ -38,7 +37,7 @@ public class SQLCreate {
 				Statement stmt4 = c.createStatement();
 				String sql4 = "CREATE TABLE IF NOT EXISTS \"Puestos\"(\r\n" + 
 						"	\"Id\" INTEGER   PRIMARY KEY AUTOINCREMENT,\r\n" + 
-						"	\"Tipo\" TEXT Unique NOT NULL,\r\n" + 
+						"	\"Nombre\" TEXT Unique NOT NULL,\r\n" + 
 						"	\"Zona_id\" INTEGER NOT NULL,\r\n" + 
 						"	Foreign key (Zona_id) References Zonas(Id)\r\n" + 
 						")";
@@ -114,6 +113,8 @@ public class SQLCreate {
 						"	FOREIGN KEy (Empleado_id) REFERENCES Empleados(Id),\r\n" + 
 						"	FOREIGN Key (Puesto_id) REFERENCES Puestos(Id)\r\n" + 
 						")";
+				stmt10.executeUpdate(sql10);
+				stmt10.close();
 				System.out.println("Tablas creadas");
 				//Close DB connection
 				Conexion.closeConnection(c);

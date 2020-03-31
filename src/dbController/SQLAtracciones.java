@@ -9,14 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import model.Atracciones;
+
 
 public class SQLAtracciones {
 	
-	private static Connection c;
 	
-public static String getNombreAtraccion(int id) throws SQLException {
+public static String getNombreAtraccion(int id,Connection c) throws SQLException {
 		
-		Connection c =Conexion.openConnection();
 		
 		String sql = "SELECT Nombre FROM Atracciones Where id LIKE ? ";
 		PreparedStatement prep = c.prepareStatement(sql);
@@ -38,14 +38,12 @@ public static String getNombreAtraccion(int id) throws SQLException {
 		rs.close();
 		prep.close();
 		
-		Conexion.closeConnection(c);
 		return null;
 		
 	}
 
-public static int getId(String nombreAtraccion) throws SQLException {
+public static int getId(String nombreAtraccion,Connection c) throws SQLException {
 	int id = 0;
-	Connection c =Conexion.openConnection();
 	
 	String sql = "SELECT id FROM Atracciones Where Nombre LIKE ? ";
 	PreparedStatement prep = c.prepareStatement(sql);
@@ -64,7 +62,6 @@ public static int getId(String nombreAtraccion) throws SQLException {
 	// CLOSE Statement
 	rs.close();
 	prep.close();
-	Conexion.closeConnection(c);
 	return id;
 }
 
@@ -73,26 +70,16 @@ public static int getId(String nombreAtraccion) throws SQLException {
 	public static void obtenerInfo() throws SQLException{
 		Connection c =Conexion.openConnection();
 	//  SQLSelect
-		printAtracciones();
+		printAtracciones(c);
 		
 		Conexion.closeConnection(c);
 		
 	}
 	
-	public static void insertarDatos() throws SQLException, IOException{
+	public static void insertarDatos(Atracciones atraccion) throws SQLException, IOException{
 		Connection c =Conexion.openConnection();
 		//  SQLInsert
-		
-		System.out.println("Introduzca información del empleado:");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.print("Nombre: ");
-		String nombre = reader.readLine();
-		System.out.print("Zona: ");
-		String zona = reader.readLine();
-		int zona_id = SQLZona.getId(zona);
-		System.out.print("Espera: ");
-		int espera = Integer.parseInt(reader.readLine());
-		insert(nombre, zona_id, espera);
+		insert(atraccion,c);
 			Conexion.closeConnection(c);
 			
 	}
@@ -104,7 +91,7 @@ public static int getId(String nombreAtraccion) throws SQLException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.print("\nNombre atracción: ");
 		String searchName = reader.readLine();
-		search(searchName);
+		search(searchName,c);
 		
 			Conexion.closeConnection(c);
 			
@@ -116,7 +103,7 @@ public static int getId(String nombreAtraccion) throws SQLException {
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("\nElija una atracción, introduzca su ID: ");
-		printAtracciones();
+		printAtracciones(c);
 		int atraccion_id = Integer.parseInt(reader.readLine());
 		System.out.print("\nfije el nuevo tiempo de espera de la atracción: ");
 		int nuevaEspera = Integer.parseInt(reader.readLine());
@@ -154,7 +141,8 @@ public static int getId(String nombreAtraccion) throws SQLException {
 			
 	}
 	
-	public static void search(String searchname) throws SQLException {
+	/*public static Atracciones search(String searchname, Connection c) throws SQLException {
+		Atracciones atraccion= null;
 		String sql = "SELECT * FROM Atracciones Where nombre LIKE ? ";
 		PreparedStatement prep = c.prepareStatement(sql);
 		prep.setString(1, searchname);
@@ -164,9 +152,13 @@ public static int getId(String nombreAtraccion) throws SQLException {
 			int id = rs.getInt("Id");
 			String name = rs.getString("Nombre");
 			int zona_id = rs.getInt("Zona_id");
-			String zona = SQLZona.getNombreZona(zona_id);
-			int espera = rs.getInt("Espera");
-			System.out.println("\nId: " + id + "\nNombre: "+ name + "\nZona: " + zona + "\nEspera" + espera);
+			atraccion = new Atracciones(name, zona_id);
+			atraccion.setId(id);
+			atraccion.setEspera(c);
+			String sql2 = "UPDATE Atracciones SET espera ='"+atraccion.getEspera()+"' WHERE id='"+ atraccion.getId() +"' ";
+			PreparedStatement prep2 =c.prepareStatement(sql2);
+			prep2.executeUpdate();
+			
 		}
 		}else {
 			System.out.println("No hubo resultados");
@@ -176,17 +168,47 @@ public static int getId(String nombreAtraccion) throws SQLException {
 		rs.close();
 		prep.close();
 		System.out.println("Busqueda Completada");
+		return atraccion;
+	}
+	*/
+	public static void search(String searchname, Connection c) throws SQLException {
+		String sql = "SELECT * FROM Atracciones Where nombre LIKE ? ";
+		PreparedStatement prep = c.prepareStatement(sql);
+		prep.setString(1, searchname);
+		ResultSet rs = prep.executeQuery();
+		if(rs != null) {
+		while(rs.next()) {
+			int id = rs.getInt("Id");
+			String name = rs.getString("Nombre");
+			int zona_id = rs.getInt("Zona_id");
+			String nombreZona = SQLZonas.getNombreZona(zona_id, c);
+			int espera =rs.getInt("Espera");
+			System.out.println("Id: " + id + "\nNombre: "+ name +
+					"\nZona: " + nombreZona + "\nEspera: " + espera);
+			
+			
+		}
+		}else {
+			System.out.println("No hubo resultados");
+		}
+		
+		// CLOSE Statement
+		rs.close();
+		prep.close();
+		System.out.println("Busqueda Completada");
+		
 	}
 	
-	public static void insert(String nombre, int zona_id, int espera ) throws SQLException {
+	
+	public static void insert(Atracciones atraccion, Connection c) throws SQLException {
 		Statement stmt = c.createStatement();
-		String sql = "INSERT INTO Empleados (Nombre, Zona_id, Espera) "
-				+ "VALUES ('" + nombre + "', '" + zona_id	+ "', '" + espera + "', '"  +"');";
+		String sql = "INSERT INTO Atracciones (Nombre, Zona_id, Espera) "
+				+ "VALUES ('" + atraccion.getNombre() + "', '" + atraccion.getZona_id()	+ "', '" + atraccion.getEspera() + "');";
 		stmt.executeUpdate(sql);
 		stmt.close();
 	}
 	
-	private static void printAtracciones() throws SQLException {
+	public static void printAtracciones(Connection c) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Atracciones";
 		ResultSet rs = stmt.executeQuery(sql);
@@ -194,9 +216,9 @@ public static int getId(String nombreAtraccion) throws SQLException {
 			int id = rs.getInt("Id");
 			String nombre = rs.getString("Nombre");	
 			int zona_id = rs.getInt("Zona_id");
-			String nombreZona = SQLZona.getNombreZona(zona_id);
+			String nombreZona = SQLZonas.getNombreZona(zona_id,c);
 			int espera = rs.getInt("Espera");
-			System.out.println("id: " + id + "\nNombre: "+ nombre + "\nZona:"+ nombreZona + "\nEspera: " + espera);
+			System.out.println("id: " + id + " Nombre: "+ nombre + " Zona: "+ nombreZona+ " Espera: "+espera);
 		}
 		rs.close();
 		stmt.close();

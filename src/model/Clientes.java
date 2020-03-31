@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -73,16 +74,16 @@ public class Clientes {
 	public Integer getPuesto_id() {
 		return puesto_id;
 	}
-	public void setPuesto_id(String puesto) throws SQLException {
-		int puesto_id = SQLPuestos.getId(puesto);
+	public void setPuesto_id(String puesto, Connection c) throws SQLException {
+		int puesto_id = SQLPuestos.getId(puesto,c);
 		this.puesto_id = puesto_id;
 		this.atraccion_id=0;
 	}
 	public Integer getAtraccion_id() {
 		return atraccion_id;
 	}
-	public void setAtraccion_id(String atraccion) throws SQLException {
-		int atraccion_id = SQLAtracciones.getId(atraccion);
+	public void setAtraccion_id(String atraccion,Connection c) throws SQLException {
+		int atraccion_id = SQLAtracciones.getId(atraccion,c);
 		System.out.println(""+atraccion_id);
 		this.atraccion_id = atraccion_id;
 		this.puesto_id=0;

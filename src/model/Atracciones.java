@@ -1,6 +1,10 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import dbController.SQLClientes;
 
 public class Atracciones {
 	
@@ -11,6 +15,20 @@ public class Atracciones {
 	private int espera;
 	private ArrayList<int[]> empleados_id = new ArrayList<int[]>();
 	
+	
+	
+	
+	public Atracciones() {
+		this.id =0;
+		this.nombre="";
+		this.zona_id = 0;
+		this.espera =0;
+	}
+	public Atracciones(String nombre, int zona_id) {
+		this.nombre = nombre;
+		this.zona_id = zona_id;
+		this.espera =0;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -36,10 +54,12 @@ public class Atracciones {
 		this.clientes = clientes;
 	}
 	public int getEspera() {
-		return espera;
+		
+		return this.espera;
 	}
-	public void setEspera(int espera) {
-		this.espera = espera;
+	public void setEspera(Connection c) throws SQLException {
+		int clientes = SQLClientes.getSumClientes(c,this.id);
+		this.espera = clientes * 4;
 	}
 	public ArrayList<int[]> getEmpleados_id() {
 		return empleados_id;

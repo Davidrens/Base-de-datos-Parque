@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import model.Cargo;
+import model.Cargos;
 import model.Empleados;
 import model.Zona;
 
@@ -23,7 +23,7 @@ public class SQLUpdate {
 			while (rs.next()) {
 				int id = rs.getInt("Id");
 				String nombre = rs.getString("Nombre");
-				Cargo cargo_id = getCargos(rs.getInt("Cargo_id"));	
+				Cargos cargo_id = getCargos(rs.getInt("Cargo_id"));	
 				Zona zona_id = getZonas(rs.getInt("Zona_id"));
 				Integer sueldo = rs.getInt("Sueldo");
 				Empleados empleado = new Empleados(id, nombre, cargo_id, zona_id, sueldo);
@@ -33,14 +33,14 @@ public class SQLUpdate {
 			stmt.close();
 		}
 		
-		private static Cargo getCargos(int cargo_id) throws SQLException {
+		private static Cargos getCargos(int cargo_id) throws SQLException {
 			Statement stmt = c.createStatement();
 			String sql = "SELECT * FROM Cargos WHERE id = "+ cargo_id;
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			int id = rs.getInt("Id");
 			String nombre = rs.getString("Nombre");
-			Cargo cargo = new Cargo(id, nombre);
+			Cargos cargo = new Cargos(id, nombre);
 			rs.close();
 			stmt.close();
 			return cargo;

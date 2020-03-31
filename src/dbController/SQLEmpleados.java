@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import model.Cargo;
+import model.Cargos;
 import model.Empleados;
 import model.Zona;
 
@@ -27,33 +27,16 @@ public class SQLEmpleados {
 		
 	}
 	
-	public static void insertarDatos() throws SQLException, IOException{
+	public static void insertarDatos(Empleados empleado) throws SQLException, IOException{
 		Connection c =Conexion.openConnection();
 		//  SQLInsert
-		
-		System.out.println("Introduzca información del empleado:");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.print("Nombre: ");
-		String nombre = reader.readLine();
-		System.out.print("Cargo: ");
-		String cargo = reader.readLine();
-		int cargo_id = SQLCargo.getId(cargo);
-		System.out.print("Zona: ");
-		String zona = reader.readLine();
-		int zona_id = SQLZona.getId(zona);
-		System.out.print("Sueldo: ");
-		int sueldo = Integer.parseInt(reader.readLine());
-		
-		insert(nombre, cargo_id, zona_id, sueldo);
-		
-		
-		
-		
-			Conexion.closeConnection(c);
+	
+		insert(empleado,c);
+		Conexion.closeConnection(c);
 			
 	}
 	
-	public static void buscarDatos() throws SQLException, IOException{
+	/*public static void buscarDatos() throws SQLException, IOException{
 		Connection c =Conexion.openConnection();
 		//  SQLSearch
 		
@@ -65,23 +48,14 @@ public class SQLEmpleados {
 		
 			Conexion.closeConnection(c);
 			
-	}
+	}*/
 	
-	public static void actualizarDatos() throws SQLException, NumberFormatException, IOException{
+	public static void actualizarDatos(int id, int sueldo) throws SQLException, NumberFormatException, IOException{
 		Connection c =Conexion.openConnection();
-		//  SQLUpdate
-		
-		
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Elija a un empleado, introduzca su ID: ");
-		printEmpleados(c);
-		int empleado_id = Integer.parseInt(reader.readLine());
-		System.out.print("fije el nuevo sueldo del empleado: ");
-		int nuevoSueldo = Integer.parseInt(reader.readLine());
 		String sql = "UPDATE Empleados SET sueldo =? WHERE id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
-		prep.setInt(1, nuevoSueldo);
-		prep.setInt(2, empleado_id);
+		prep.setInt(1, sueldo);
+		prep.setInt(2, id);
 		prep.executeUpdate();
 		System.out.println("\nActualizacion de saldo realizada");
 		
@@ -103,16 +77,11 @@ public class SQLEmpleados {
 				
 	}
 	
-	public static void borrarDatos() throws SQLException, NumberFormatException, IOException{
+	public static void borrarDatos(int id) throws SQLException, NumberFormatException, IOException{
 		Connection c =Conexion.openConnection();
-		//  SQLDelete
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("\nElija un empleado a borrar, teclee su ID: ");
-		printEmpleados(c);
-		int cargo_id = Integer.parseInt(reader.readLine());
 		String sql = "DELETE FROM Empleados WHERE id=?";
 		PreparedStatement prep = c.prepareStatement(sql);
-		prep.setInt(1, cargo_id);
+		prep.setInt(1, id);
 		prep.executeUpdate();
 		System.out.println("\nBorrado completado");
 			Conexion.closeConnection(c);
@@ -120,7 +89,7 @@ public class SQLEmpleados {
 	}
 	
 	
-	private static void printEmpleados(Connection c) throws SQLException {
+	public static void printEmpleados(Connection c) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Empleados";
 		ResultSet rs = stmt.executeQuery(sql);
@@ -131,49 +100,55 @@ public class SQLEmpleados {
 			int cargo_id = rs.getInt("Cargo_id");	
 			int zona_id = rs.getInt("Zona_id");
 			int sueldo = rs.getInt("Sueldo");
-			Empleados empleado = new Empleados(id, nombre, cargo_id, zona_id, sueldo);
-			System.out.println(empleado);
+			String nombreZona = SQLZonas.getNombreZona(zona_id, c);
+			String nombreCargo = SQLCargos.getNombreCargo(cargo_id,c);
+			Empleados empleado = new Empleados(nombre, cargo_id, zona_id, sueldo);
+			empleado.setId(id);
+			System.out.println(empleado + "    nombre_zona: "+ nombreZona+"    nombre_cargo: "+nombreCargo);
 		}
 		}
 		rs.close();
 		stmt.close();
 	}
 	
-	private static Cargo getCargos(int cargo_id) throws SQLException {
+	public static Cargos getCargos(int cargo_id, Connection c) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Cargos WHERE id = "+ cargo_id;
 		ResultSet rs = stmt.executeQuery(sql);
 		rs.next();
 		int id = rs.getInt("Id");
 		String nombre = rs.getString("Nombre");
-		Cargo cargo = new Cargo(id, nombre);
+		Cargos cargo = new Cargos( nombre);
+		cargo.setId(id);
 		rs.close();
 		stmt.close();
 		return cargo;
 	}
 	
-	private static Zona getZonas(int zona_id) throws SQLException {
+	public static Zona getZonas(int zona_id) throws SQLException {
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Zonas WHERE id = "+ zona_id;
 		ResultSet rs = stmt.executeQuery(sql);
 		rs.next();
 		int id = rs.getInt("Id");
 		String nombre = rs.getString("Nombre");
-		Zona zona = new Zona(id, nombre);
+		Zona zona = new Zona(nombre);
+		zona.setId(id);
 		rs.close();
 		stmt.close();
 		return zona;
 	}
 
-	public static void insert(String nombre, int cargo_id, int zona_id, int sueldo ) throws SQLException {
+	public static void insert(Empleados empleado,Connection c ) throws SQLException {
 		Statement stmt = c.createStatement();
-		String sql = "INSERT INTO Empleados (Nombre, Cargo_id, Zona_id, Sueldo, Puesto_id, Atraccion_id) "
-				+ "VALUES ('" + nombre + "', '" + cargo_id	+ "', '" + zona_id + "', '" + sueldo + "', '"  +"');";
+		String sql = "INSERT INTO Empleados (Nombre, Cargo_id, Zona_id, Sueldo) "
+				+ "VALUES ('" + empleado.getNombre() + "', '" + empleado.getCargo_id()	+ "', '" + empleado.getZona_id()+ "', '" + empleado.getSueldo() + "');";
 		stmt.executeUpdate(sql);
 		stmt.close();
 	}
 	
 	public static void search(String searchname) throws SQLException {
+		Connection c =Conexion.openConnection();
 		String sql = "SELECT * FROM Empleados Where nombre LIKE ? ";
 		PreparedStatement prep = c.prepareStatement(sql);
 		prep.setString(1, searchname);
@@ -182,7 +157,13 @@ public class SQLEmpleados {
 		while(rs.next()) {
 			int id = rs.getInt("Id");
 			String name = rs.getString("Nombre");
-			System.out.println(id + ": "+ name);
+			int cargo_id = rs.getInt("Cargo_id");
+			String nombreCargo = SQLCargos.getNombreCargo(cargo_id, c);
+			int zona_id = rs.getInt("Zona_id");
+			String nombreZona = SQLZonas.getNombreZona(zona_id, c);
+			int sueldo = rs.getInt("Sueldo");
+			System.out.println("Id: " + id + "\nNombre: "+ name + "\nCargo: " + nombreCargo +
+					"\nZona: " + nombreZona + "\nSueldo: " + sueldo);
 		}
 		}else {
 			System.out.println("No hubo resultados");
@@ -192,6 +173,7 @@ public class SQLEmpleados {
 		rs.close();
 		prep.close();
 		System.out.println("Busqueda Completada");
+		Conexion.closeConnection(c);
 	}
 	
 }

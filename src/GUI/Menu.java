@@ -1,11 +1,15 @@
 package GUI;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+import dbController.Conexion;
+import dbController.SQLAtracciones;
 import dbController.SQLCreate;
+import model.Atracciones;
 
 public class Menu {
 
@@ -18,7 +22,7 @@ public class Menu {
         while (!salir) {
             try {
                 System.out.println("Seleccione la función deseada\n1) Crear tablas \n2) Borrar tabla \n3) Insertar datos en tabla \n"
-                		+ "4) Obtener información de una tabla"+ " \n5) Buscar datos en una tabla \n6) Realizar actualización de datos en una tabla \n"
+                		+ "4) Obtener información de una tabla"+ " \n5) Buscar datos en tabla \n6) Realizar actualización de datos en una tabla \n"
                 				+ "7) Borrar datos de una tabla \n8) Salir");
                 opcion = sc.nextInt();
                 switch (opcion) {
@@ -28,29 +32,29 @@ public class Menu {
                         break;
                     case 2:
                         System.out.println("Has seleccionado la opcion: Borrar tabla");
-	                    DropTable.DropTable();
+	                    DropTable.DropTables(sc);
                         break;
                     case 3:
                         System.out.println("Has seleccionado la opcion: Insertar datos en tabla");
-	                    SelecTabla.SelecTabla(opcion,sc);
+	                    SelecTabla.SelecTablas(opcion,sc);
                         break;
                     case 4:
                     	System.out.println("Has seleccionado la opcion: Obtener información de una tabla");
-	                    SelecTabla.SelecTabla(opcion,sc);
+	                    SelecTabla.SelecTablas(opcion,sc);
                         break;
                     case 5:
-                    	System.out.println("Has seleccionado la opcion: Buscar datos en una tabla");
-	                    SelecTabla.SelecTabla(opcion,sc);
+                    	System.out.println("Has seleccionado la opcion: Buscar datos en tabla");
+                    	SelecTabla.SelecTablas(opcion,sc);
                     	break;
                     	
                     case 6:
                     	System.out.println("Has seleccionado la opcion: Realizar una actualización de datos en una tabla ");
-	                    SelecTabla.SelecTabla(opcion,sc);
+	                    SelecTabla.SelecTablas(opcion,sc);
                     	break;
                     	
                     case 7:
                     	System.out.println("Has seleccionado la opción: Borrar datos de una tabla");
-	                    SelecTabla.SelecTabla(opcion,sc);
+	                    SelecTabla.SelecTablas(opcion,sc);
                     	break;
                     	
                     case 8:
@@ -69,7 +73,5 @@ public class Menu {
         
     }
  }
-
-
 
 

@@ -8,8 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
-
 import model.Clientes;
 
 //import model.Cargo;
@@ -18,8 +16,6 @@ import model.Clientes;
 
 public class SQLClientes {
 
-	private static Connection c;
-	
 	public static void obtenerInfo() throws SQLException{
 		Connection c = Conexion.openConnection();
 		
@@ -43,13 +39,13 @@ public static void insertarDatos(Clientes cliente) throws SQLException, IOExcept
 		stmt.executeUpdate(sql);
 		stmt.close();
 		}else {
+			System.out.println("Acceso al insert de puestos");
 			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO Clientes (Nombre, Edad, Altura, Fecha_entrada, Fecha_salida, Familia_numerosa, Puesto_id) "
 					+ "VALUES ('" + cliente.getNombre() + "', ' "+ cliente.getEdad()+ "', '" + cliente.getAltura() + "', '" + cliente.getFechaentrada() + "', '" + cliente.getFechasalida() + "','" + cliente.getNumerosa()+"',' "+ cliente.getPuesto_id()+" ');";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		}
-		c.close();
 		Conexion.closeConnection(c);
 			
 	}
@@ -77,9 +73,9 @@ public static void insertarDatos(Clientes cliente) throws SQLException, IOExcept
 			String fecha_salida = rs.getString("Fecha_salida");
 			boolean numerosa = rs.getBoolean("Familia_numerosa");
 			int puesto_id =  rs.getInt("Puesto_id");
-			String nombrePuesto = SQLPuestos.getNombrePuesto(puesto_id);
+			String nombrePuesto = SQLPuestos.getNombrePuesto(puesto_id,c);
 			int atraccion_id =  rs.getInt("Cargo_id");
-			String nombreAtraccion = SQLAtracciones.getNombreAtraccion(atraccion_id);
+			String nombreAtraccion = SQLAtracciones.getNombreAtraccion(atraccion_id,c);
 			
 			
 			System.out.println(id + ": "+ name + ", " + edad + ", " + altura + ", " + fecha_entrada
@@ -135,7 +131,7 @@ public static void insertarDatos(Clientes cliente) throws SQLException, IOExcept
 	
 	private static void printClientes(Connection c) throws SQLException {
 				
-		
+		System.out.println("Imprimiendo Clientes");
 		Statement stmt = c.createStatement();
 		String sql = "SELECT * FROM Clientes";
 		ResultSet rs = stmt.executeQuery(sql);
@@ -149,9 +145,9 @@ public static void insertarDatos(Clientes cliente) throws SQLException, IOExcept
 			String fecha_salida = rs.getString("Fecha_salida");
 			boolean numerosa = rs.getBoolean("Familia_numerosa");
 			int puesto_id =  rs.getInt("Puesto_id");
-			String nombrePuesto = SQLPuestos.getNombrePuesto(puesto_id);
-			int atraccion_id =  rs.getInt("Cargo_id");
-			String nombreAtraccion = SQLAtracciones.getNombreAtraccion(atraccion_id);
+			String nombrePuesto = SQLPuestos.getNombrePuesto(puesto_id,c);
+			int atraccion_id =  rs.getInt("Atraccion_id");
+			String nombreAtraccion = SQLAtracciones.getNombreAtraccion(atraccion_id,c);
 			
 			
 			System.out.println(id + ": "+ nombre + ", " + edad + ", " + altura + ", " + fecha_entrada
@@ -163,7 +159,19 @@ public static void insertarDatos(Clientes cliente) throws SQLException, IOExcept
 		stmt.close();
 	}
 	
-	
+	public static int getSumClientes(Connection c,int atraccion_id) throws SQLException {
+		int sum =0;
+		Statement stmt =c.createStatement();
+		String sql = "Select ID FROM Clientes where Atraccion_id ='"+atraccion_id+"' ";
+		ResultSet rs = stmt.executeQuery(sql);
+		if(rs!= null) {
+			while(rs.next()) {
+					sum++;
+			}
+		}
+		return sum;
+		
+	}
 	
 	
 

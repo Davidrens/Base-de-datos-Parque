@@ -6,9 +6,8 @@ public class Zona {
 	private int id;
 	private String nombre;
 	
-	public Zona(int id, String nombre) {
-		
-		// TODO Auto-generated constructor stub
+	public Zona(String nombre) {
+		this.nombre= nombre;
 	}
 	public String getNombre() {
 		return nombre;

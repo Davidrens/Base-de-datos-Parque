@@ -5,18 +5,17 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import dbController.SQLAtracciones;
-import dbController.SQLCargo;
+import dbController.SQLCargos;
 import dbController.SQLClientes;
 import dbController.SQLEmpleados;
 import dbController.SQLPuestos;
-import dbController.SQLZona;
+import dbController.SQLZonas;
 
 public class DropTable {
 	
-	public static void DropTable() throws SQLException {
+	public static void DropTables(Scanner sc) throws SQLException {
 		
 		Boolean salir = false;
-	    Scanner sc = new Scanner(System.in);
 	    int opcion;
 	
 
@@ -48,12 +47,12 @@ public class DropTable {
 		                 
 		                case 5:  
 		                    System.out.println("Has seleccionado la tabla de Zona");
-		                    SQLZona.borrarTabla();
+		                    SQLZonas.borrarTabla();
 		                    break;
 		                    
 		                case 6:  
 		                    System.out.println("Has seleccionado la tabla de Cargo");
-		                    SQLCargo.borrarTabla();
+		                    SQLCargos.borrarTabla();
 		                    break;
 		                    
 		                case 7:  
@@ -66,11 +65,6 @@ public class DropTable {
 		            System.out.println("Debes insertar un número");
 		            sc.next();
 		        }
-	}
-		 sc.close();
-		 
-	}
-
-
-
+		 }
+	 }
 }

@@ -121,6 +121,11 @@ public class SQLCreate {
 				stmt10.executeUpdate(sql10);
 				stmt10.close();
 				
+				Statement stmt11 = c.createStatement();
+				String sql11 = "INSERT INTO Zonas (Nombre) "
+						+ "VALUES ('');";
+				stmt11.executeUpdate(sql);
+				stmt11.close()
 				
 				
 				//...

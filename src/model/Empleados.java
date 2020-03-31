@@ -16,8 +16,7 @@ public class Empleados {
 		this.zona_id = 0;
 		this.sueldo = 0;
 	}
-	public Empleados(Integer id, String nombre, int cargo_id, int zona_id, int sueldo) {
-		this.id = id;
+	public Empleados(String nombre, int cargo_id, int zona_id, int sueldo) {
 		this.nombre = nombre;
 		this.cargo_id = cargo_id;
 		this.zona_id = zona_id;
